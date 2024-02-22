@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Оформление билетов</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Представление</th>
+                <th>Статус покупки</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in today_tickets %}
+            <tr>
+                <td>{{ ticket.name }}</td>
+                <td>{{ ticket.surname }}</td>
+                <td>{{ ticket.performance.title }}</td>
+                <td>{{ ticket.order_status|yesno:"Куплен,Не куплен" }}</td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+                        <input type="hidden" name="change_status" value="true">
+                        <button type="submit" class="btn btn-sm btn-primary">Изменить статус</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Новый билет</h3>
+    <form class="mb-4" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Создать билет</button>
+    </form>
+</div>
+{% endblock %}

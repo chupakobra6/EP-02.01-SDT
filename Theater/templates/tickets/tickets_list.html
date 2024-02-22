@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Список билетов</h2>
+        <a href="{% url 'ticket_create' %}" class="btn btn-success mb-2">Добавить билет</a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Имя клиента</th>
+                <th>Фамилия клиента</th>
+                <th>Представление</th>
+                <th>Зал</th>
+                <th>Место</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.name }}</td>
+                    <td>{{ ticket.surname }}</td>
+                    <td>{{ ticket.performance }}</td>
+                    <td>{{ ticket.hall }}</td>
+                    <td>{{ ticket.seat }}</td>
+                    <td>
+                        <a href="{% url 'ticket_edit' ticket.id %}" class="btn btn-primary btn-sm">Изменить</a>
+                        <a href="{% url 'ticket_delete' ticket.id %}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('Вы уверены, что хотите удалить этот билет?');">Удалить</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

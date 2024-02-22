@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Отзывы{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Отзывы</h2>
+
+        <!-- Отзывы на представления -->
+        <div class="mb-5">
+            <h3>Представления</h3>
+            {% for performance in performances %}
+                <div class="card mb-3 text-bg-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ performance.title }}</h5>
+                        <ul>
+                            {% for review in performance.performancerating_set.all %}
+                                <li>{{ review.description }} (Оценка: {{ review.grade }})</li>
+                            {% empty %}
+                                <li>Отзывов пока нет.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Отзывы на актёров -->
+        <div class="mb-5">
+            <h3>Актёры</h3>
+            {% for actor in actors %}
+                <div class="card mb-3 text-bg-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ actor.name }}</h5>
+                        <ul>
+                            {% for review in actor.actorrating_set.all %}
+                                <li>{{ review.description }} (Оценка: {{ review.grade }})</li>
+                            {% empty %}
+                                <li>Отзывов пока нет.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Формы для добавления новых отзывов -->
+        <div class="mb-5">
+            <h3>Оставить отзыв</h3>
+
+            <!-- Форма для отзыва на представление -->
+            <div class="card mb-3 text-bg-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Отзыв на представление</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ p_form.as_p }}
+                        <button type="submit" class="btn btn-primary" name="performance_review">Оставить отзыв на
+                            представление
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Форма для отзыва на актёра -->
+            <div class="card mb-3 text-bg-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Отзыв на актёра</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ a_form.as_p }}
+                        <button type="submit" class="btn btn-primary" name="actor_review">Оставить отзыв на актёра
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

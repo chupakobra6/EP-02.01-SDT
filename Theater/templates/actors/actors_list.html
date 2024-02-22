@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Список актёров</h2>
+        <a href="{% url 'actor_create' %}" class="btn btn-success mb-2">Добавить актёра</a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Отчество</th>
+                <th>Роль</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for actor in actors %}
+                <tr>
+                    <td>{{ actor.name }}</td>
+                    <td>{{ actor.surname }}</td>
+                    <td>{{ actor.patronymic }}</td>
+                    <td>{{ actor.role }}</td>
+                    <td>
+                        <a href="{% url 'actor_edit' actor.id %}" class="btn btn-primary btn-sm">Изменить</a>
+                        <a href="{% url 'actor_delete' actor.id %}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('Вы уверены, что хотите удалить этого актёра?');">Удалить</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% load static %}
+<header>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            {% if request.session.is_authenticated %}
+                <a class="navbar-brand" href="{% url 'profile' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="Логотип" height="50">
+                </a>
+            {% else %}
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="Логотип" height="50">
+                </a>
+            {% endif %}
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    {% if request.session.employee_position == "Директор" %}
+                        <a class="nav-link" href="{% url 'performances_list' %}">Страница представлений</a>
+                        <a class="nav-link" href="{% url 'employees_list' %}">Страница сотрудников</a>
+                    {% elif request.session.employee_position == "Кассир" %}
+                        <a class="nav-link" href="{% url 'all_performances' %}">Страница представлений</a>
+                        <a class="nav-link" href="{% url 'create_ticket' %}">Страница билетов</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'all_performances' %}">Представления</a>
+                        <a class="nav-link" href="{% url 'review_page' %}">Отзывы</a>
+                    {% endif %}
+                </div>
+                <div class="navbar-nav ms-auto">
+                    {% if request.session.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Войти</a>
+                        </li>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

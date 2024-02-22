@@ -1,0 +1,31 @@
+body {
+    font-family: 'Lucida Grande', Arial, sans-serif;
+    font-size: 18px;
+    background-color: #d2eeeb;
+}
+
+header {
+    background-color: #417690;
+}
+
+main {
+    min-height: 600px;
+}
+
+.carousel-item img {
+    height: 980px;
+    width: auto;
+    object-fit: cover;
+}
+
+.card-img {
+    max-height: 600px;
+    width: auto;
+    object-fit: contain;
+}
+
+footer {
+    color: black;
+    font-size: 16px;
+    background-color: #264b5d;
+}

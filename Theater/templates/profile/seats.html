@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-4">
+    <h2>Выбор мест на представление</h2>
+
+    <form class="mt-2" method="post">
+        {% csrf_token %}
+        <select name="performance_id" onchange="this.form.submit()">
+            {% for performance in performances %}
+                <option value="{{ performance.id }}"
+                        {% if selected_performance.id == performance.id %}selected{% endif %}>
+                    {{ performance.title }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if selected_performance %}
+        <h4 class="mt-2">Зал: {{ selected_performance.hall.title }}</h4>
+    {% endif %}
+
+    <div class="mt-2">
+        <div class="row-container">
+            {% for row, seats_in_row in rows.items %}
+                <div class="row-block">
+                    <strong>Ряд {{ row }}</strong>
+                    {% for seat in seats_in_row %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="performance_id" value="{{ selected_performance.id }}">
+                            <button name="seat_id" value="{{ seat.id }}"
+                                    class="seat btn {{ seat.status|yesno:'free,occupied' }}" type="submit">
+                                {{ seat.seat_number }}
+                            </button>
+                        </form>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <style>
+        .row-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Отступ между рядами */
+            margin-top: 20px; /* Отступ от формы выбора */
+        }
+
+        .row-block {
+            display: flex;
+            flex-direction: column; /* Места в ряду располагаются вертикально */
+            align-items: center;
+            margin-right: 20px; /* Отступ справа от каждого ряда */
+        }
+
+        .seat {
+            margin: 2px;
+            padding: 5px;
+            display: block; /* Заставляет кнопки мест отображаться как блоки */
+            width: 60px; /* Фиксированная ширина для кнопок мест */
+        }
+
+        .free {
+            background-color: #F44336; /* Красный для свободных мест */
+        }
+
+        .occupied {
+            background-color: #4CAF50; /* Зеленый для занятых мест */
+        }
+    </style>
+
+{% endblock %}

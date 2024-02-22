@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Личный кабинет</h2>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h4 class="card-title">Информация о сотруднике</h4>
+                <p class="card-text">Имя: {{ employee.name }}</p>
+                <p class="card-text">Фамилия: {{ employee.surname }}</p>
+                <p class="card-text">Отчество: {{ employee.patronymic }}</p>
+                <p class="card-text">Телефонный номер: {{ employee.phone_number }}</p>
+                <p class="card-text">Электронная почта: {{ employee.email }}</p>
+                <p class="card-text">Логин: {{ employee.login }}</p>
+                <p class="card-text">Должность: {{ employee.position.title }}</p>
+                <p class="card-text">Серия паспорта: {{ employee.passport_data.series }}</p>
+                <p class="card-text">Номер паспорта: {{ employee.passport_data.number }}</p>
+                <p class="card-text">Место выдачи: {{ employee.passport_data.place_of_issue }}</p>
+                <p class="card-text">Дата выдачи: {{ employee.passport_data.date_of_issue }}</p>
+            </div>
+        </div>
+
+        <h4>Доступные разделы:</h4>
+        {% if employee.position.title == "Директор" %}
+            <a href="{% url 'export_tickets' %}" class="btn btn-primary mb-2">Экспорт отчета о продажах билетов</a>
+            <a href="{% url 'export_performance_ratings' %}" class="btn btn-primary mb-2">Экспорт отчета об оценках
+                представлений</a>
+            <a href="{% url 'export_actor_ratings' %}" class="btn btn-primary mb-2">Экспорт отчета об оценках
+                актёров</a>
+            <ul>
+                <li><a href="{% url 'performances_list' %}">Страница представлений</a></li>
+                <li><a href="{% url 'employees_list' %}">Страница сотрудников</a></li>
+                <li><a href="{% url 'actors_list' %}">Страница актёров</a></li>
+                <li><a href="{% url 'performance_actors_list' %}">Страница актёров представлений</a></li>
+                <li><a href="{% url 'positions_list' %}">Страница должностей</a></li>
+                <li><a href="{% url 'halls_list' %}">Страница залов</a></li>
+                <li><a href="{% url 'seats_list' %}">Страница мест</a></li>
+                <li><a href="{% url 'passport_data_list' %}">Страница паспортных данных</a></li>
+            </ul>
+        {% elif employee.position.title == "Кассир" %}
+            <ul>
+                <li><a href="{% url 'all_performances' %}">Страница представлений</a></li>
+                <li><a href="{% url 'create_ticket' %}">Страница билетов</a></li>
+                <li><a href="{% url 'seats_view' %}">Страница мест</a></li>
+            </ul>
+        {% endif %}
+        {% if employee.position.title == "Администратор" %}
+            <a href="/admin/" class="btn btn-warning mb-2">Админ-панель</a>
+        {% endif %}
+    </div>
+{% endblock %}
